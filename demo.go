@@ -25,9 +25,6 @@ func f3() (r int) {
 }
 
 func main()  {
-	// 使用 defer 后的返回值分析
-	// 1、方法中的 return 不像看到的那样直接返回对应变量的值
-	// 2、而是分解为 对返回变量进行赋值 >> 执行 defer 函数 >> 返回变量值
 	fmt.Println(f())	// 1
 	fmt.Println(f2())	// 5
 	fmt.Println(f3())	// 1
