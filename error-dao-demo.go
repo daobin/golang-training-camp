@@ -1,35 +1,53 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/jmoiron/sqlx"
 )
 
-type TestData struct {
-	Name string `db:"name"`
-	Age int `db:"age"`
+type User struct {
+	id int
+	name string
+	age int
 }
 
-var Db *sqlx.DB
+var db *sql.DB
 
-func init() {
-	Db, err := sqlx.Connect("mysql", "root:root@tcp(127.0.0.21:3306)/test_data")
+func initDB() (err error) {
+	db, err := sql.Open("mysql", "root:root@tcp(127.0.0.1:3306)/user")
 	if err != nil {
-		fmt.Println("Connect Mysql Failed, ", err)
+		panic(err)
 		return
 	}
 
-	defer Db.Close()
+	defer db.Close()
+
+	return nil
+}
+
+func queryRow(id int) (User, error) {
+	var user User
+	sql := "select `id`, `name`, `age` from `user` where `id` = ?"
+	row := db.QueryRow(sql, id)
+	err := row.Scan(&user.id, &user.name, &user.age)
+
+	return user, err
 }
 
 func main()  {
-	var td []TestData
-	err := Db.Get(td, "select `name`, `age` from `test_data` where `age` = ?", 18)
+	err := initDB()
 	if err != nil {
-		fmt.Println("Exec Failed: ", err)
+		fmt.Println("DB init failed, err = %v\n", err)
+		return
 	}
 
-	fmt.Println(td)
+	user, err := queryRow(1)
+	if err != nil {
+		fmt.Println("DB query failed, err = %v\n", err)
+		return
+	}
+
+	fmt.Println(user)
 }
 
