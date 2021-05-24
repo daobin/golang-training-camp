@@ -1,0 +1,10 @@
+App:
+  Runtime: runtime/
+
+Mysql:
+  Host: 192.168.16.66
+  Port: 3306
+  User: root
+  Password: root
+  DbName: blog
+  TablePrefix: blog_
