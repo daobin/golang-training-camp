@@ -51,7 +51,7 @@ func GetArticleById(id int) (*Article, error) {
 	switch {
 	case err == sql.ErrNoRows:
 		return nil, errors.Wrap(e.ErrNotFound, fmt.Sprintf("err: %s", err))
-	default:
+	case err != nil:
 		return nil, errors.Wrap(e.ErrInternal, fmt.Sprintf("err: %s", err))
 	}
 
