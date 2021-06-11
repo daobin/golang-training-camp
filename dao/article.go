@@ -24,21 +24,14 @@ func GetArticles() ([]Article, error){
 
 	rows, err := db.Query(q, state)
 	if err != nil {
-		switch err {
-		case sql.ErrNoRows:
-			return nil, errors.Wrap(e.ErrNotFound, fmt.Sprintf("err: %s", err))
-		default:
-			return nil, errors.Wrap(e.ErrInternal, fmt.Sprintf("err: %s", err))
-		}
+		return nil, errors.Wrap(e.ErrInternal, fmt.Sprintf("err: %s", err))
 	}
-
 	defer rows.Close()
 
 	var articles []Article
-
 	for rows.Next() {
 		article := Article{}
-		err = rows.Scan(&article.Id, &article.TagId, &article.Title, &article.CreatedOn, &article.ModifiedOn, &article.DeletedOn, &article.CoverImageUrl)
+		err := rows.Scan(&article.Id, &article.TagId, &article.Title, &article.CreatedOn, &article.ModifiedOn, &article.DeletedOn, &article.CoverImageUrl)
 		if err != nil {
 			return nil, errors.Wrap(e.ErrInternal, fmt.Sprintf("err: %s", err))
 		}
@@ -46,4 +39,21 @@ func GetArticles() ([]Article, error){
 	}
 
 	return articles, nil
+}
+
+func GetArticleById(id int) (*Article, error) {
+	var article Article
+
+	q := "select `id`, `tag_id`, `title`, `created_on`, `modified_on`, `deleted_on`, `cover_image_url`" +
+		" from `blog_article` where `id` = ?"
+	err := db.QueryRow(q, id).Scan(&article.Id, &article.TagId, &article.Title, &article.CreatedOn, &article.ModifiedOn, &article.DeletedOn, &article.CoverImageUrl)
+
+	switch {
+	case err == sql.ErrNoRows:
+		return nil, errors.Wrap(e.ErrNotFound, fmt.Sprintf("err: %s", err))
+	default:
+		return nil, errors.Wrap(e.ErrInternal, fmt.Sprintf("err: %s", err))
+	}
+
+	return &article, nil
 }

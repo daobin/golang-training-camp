@@ -22,13 +22,13 @@ func main() {
 	// 但对于一些已经做好封装处理的数据库操作时则不建议，直接返回结果就好，比如使用 gorm 查询数据为空时
 
 	// 底层数据库操作遇到 sql.ErrNoRows 使用 Wrap 向上抛的代码如下：
-	articles, err := biz.GetArticles()
+	article, err := biz.GetArticleById(1)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	res, err := json.Marshal(articles)
+	res, err := json.Marshal(article)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -38,6 +38,7 @@ func main() {
 
 	// Go 训练营第 3 周作业
 	// —————— 基于 errgroup 实现一个 http server 的启动和关闭，以及 linux signal 信号的注册和处理，要保证能够一个退出，全部注销退出。
+
 
 
 	// Go 训练营第 4 周作业
