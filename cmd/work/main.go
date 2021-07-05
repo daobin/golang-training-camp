@@ -1,9 +1,9 @@
 package main
 
 import (
+	"trainingcamp/cmd/work/internal/week"
 	"trainingcamp/dao"
 	"trainingcamp/pkg/setting"
-	"trainingcamp/work"
 )
 
 func main() {
@@ -13,13 +13,13 @@ func main() {
 	defer dao.Close()
 
 	// Go 训练营第 2 周作业
-	//work.RunWeek02()
+	//week.RunWeek02()
 
 	// Go 训练营第 3 周作业
-	//work.RunWeek03()
+	//week.RunWeek03()
 
 	// Go 训练营第 4 周作业
-	work.RunWeek04()
+	week.RunWeek04()
 
 	// Go 训练营第 xx 周作业
 

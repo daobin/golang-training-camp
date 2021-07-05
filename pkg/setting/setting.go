@@ -1,8 +1,11 @@
 package setting
 
 import (
+	"bytes"
 	"github.com/spf13/viper"
 	"log"
+	"os"
+	"path/filepath"
 )
 
 type config struct {
@@ -25,12 +28,27 @@ type mysqlConfig struct {
 }
 
 func Setup() {
+	confPath, err := os.Getwd()
+	if err != nil {
+		log.Fatalf("Get current path error: %v", err)
+	}
+
+	var buffer bytes.Buffer
+	buffer.WriteString(confPath)
+	buffer.WriteString("/../../conf/app.yaml")
+	confPath = buffer.String()
+
+	confPath, err = filepath.Abs(confPath)
+	if err != nil {
+		log.Fatalf("Get current path error: %v", err)
+	}
+
 	//viper.SetConfigName("app")
 	//viper.SetConfigType("yaml")
 	//viper.AddConfigPath("conf")
-	viper.SetConfigFile("conf/app.yaml")
+	viper.SetConfigFile(confPath)
 
-	err := viper.ReadInConfig()
+	err = viper.ReadInConfig()
 	if err != nil {
 		log.Fatalf("Load app yaml file error: %v", err)
 	}
