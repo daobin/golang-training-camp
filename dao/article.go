@@ -10,11 +10,12 @@ import (
 type Article struct {
 	Dao
 
-	TagId int
 	Title string
 	Content string
 	State int
 	CoverImageUrl string
+	TagId int
+	Tag Tag
 }
 
 func GetArticles() ([]Article, error){

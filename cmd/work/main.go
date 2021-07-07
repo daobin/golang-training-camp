@@ -16,7 +16,7 @@ func main() {
 	//week.RunWeek02()
 
 	// Go 训练营第 3 周作业
-	//week.RunWeek03()
+	week.RunWeek03()
 
 	// Go 训练营第 4 周作业
 	week.RunWeek04()
